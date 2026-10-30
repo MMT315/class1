@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a0a12">
+  <meta name="description" content="آرشیو کلاس‌ها؛ پخش ویدیوهای آموزشی">
+  <title>آرشیو کلاس‌ها</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg-1: #0a0a12;
+      --bg-2: #12121f;
+      --accent-1: #ff6b35;
+      --accent-2: #f7c548;
+      --accent-glow: rgba(255, 107, 53, .45);
+      --surface: rgba(255, 255, 255, .045);
+      --surface-border: rgba(255, 255, 255, .09);
+      --text-primary: #f5f3ef;
+      --text-secondary: rgba(245, 243, 239, .55);
+      --card-shadow: 0 18px 48px rgba(0, 0, 0, .28);
+      --radius: 20px;
+    }
+    * { box-sizing: border-box; }
+    html { min-height: 100%; scroll-behavior: smooth; }
+    body {
+      min-height: 100vh; margin: 0; color: var(--text-primary);
+      font-family: "Vazirmatn", Tahoma, sans-serif;
+      background:
+        radial-gradient(ellipse at 8% 10%, rgba(255, 107, 53, .13), transparent 35%),
+        radial-gradient(ellipse at 92% 4%, rgba(247, 197, 72, .10), transparent 31%),
+        radial-gradient(ellipse at 55% 100%, rgba(90, 62, 150, .12), transparent 38%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2) 58%, #0b0b14);
+      background-attachment: fixed;
+      overflow-x: hidden;
+    }
+    body::before {
+      content: ""; position: fixed; inset: 0; pointer-events: none; z-index: 0; opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.88' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.8'/%3E%3C/svg%3E");
+    }
+    body[data-theme="light"] {
+      color-scheme: light;
+      --bg-1: #f3f0ea; --bg-2: #e6e0d7;
+      --surface: rgba(255,255,255,.64); --surface-border: rgba(42,35,28,.13);
+      --text-primary: #211d1a; --text-secondary: rgba(33,29,26,.62);
+      --card-shadow: 0 18px 48px rgba(60, 43, 25, .12);
+      background:
+        radial-gradient(ellipse at 8% 10%, rgba(255, 107, 53, .15), transparent 35%),
+        radial-gradient(ellipse at 92% 4%, rgba(247, 197, 72, .18), transparent 31%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2));
+    }
+    button { font: inherit; }
+    button:focus-visible { outline: 2px solid var(--accent-2); outline-offset: 4px; }
+    .page-shell { position: relative; z-index: 1; width: min(1200px, 100%); margin: 0 auto; padding: 30px 28px 42px; }
+    .topbar { display: flex; justify-content: flex-end; align-items: center; gap: 10px; min-height: 42px; }
+    .theme-toggle {
+      display: inline-flex; align-items: center; gap: 9px; padding: 10px 15px; border-radius: 999px;
+      border: 1px solid var(--surface-border); color: var(--text-primary); background: var(--surface);
+      backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+      cursor: pointer; transition: border-color .2s, transform .2s, background .2s;
+    }
+    .theme-toggle:hover { border-color: rgba(255,107,53,.55); transform: translateY(-1px); }
+    .theme-icon { font-size: 17px; line-height: 1; }
+    .hero { text-align: center; padding: 44px 0 38px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 8px; color: var(--text-secondary); font-size: 12px; letter-spacing: .3px; margin-bottom: 13px; }
+    .eyebrow::before, .eyebrow::after { content: ""; width: 24px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent-1)); }
+    .eyebrow::after { transform: rotate(180deg); }
+    h1 {
+      margin: 0; font-size: clamp(32px, 5vw, 54px); line-height: 1.35; font-weight: 700;
+      background: linear-gradient(100deg, #f7c548 5%, #ff9a43 48%, #ff6b35 90%);
+      -webkit-background-clip: text; background-clip: text; color: transparent;
+      filter: drop-shadow(0 8px 26px rgba(255,107,53,.12));
+    }
+    .hero p { margin: 12px 0 22px; color: var(--text-secondary); font-size: 15px; font-weight: 300; }
+    .stats-pill {
+      display: inline-flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px;
+      padding: 10px 17px; border-radius: 999px; border: 1px solid var(--surface-border);
+      background: var(--surface); color: var(--text-secondary); font-size: 12px;
+      backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+    }
+    .stats-pill strong { color: var(--text-primary); font-weight: 600; }
+    .stats-dot { width: 5px; height: 5px; background: var(--accent-1); border-radius: 50%; box-shadow: 0 0 12px var(--accent-glow); }
+    .status-message {
+      display: none; margin: 0 auto 25px; max-width: 620px; padding: 18px 20px; border-radius: 16px;
+      border: 1px solid var(--surface-border); background: var(--surface); color: var(--text-secondary);
+      text-align: center; line-height: 1.9; font-size: 14px;
+    }
+    .status-message.visible { display: block; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 22px; }
+    .video-card {
+      min-width: 0; overflow: hidden; border-radius: var(--radius); border: 1px solid var(--surface-border);
+      background: var(--surface); box-shadow: var(--card-shadow); cursor: pointer; text-align: right;
+      color: inherit; padding: 0; position: relative; isolation: isolate;
+      backdrop-filter: blur(20px) saturate(140%); -webkit-backdrop-filter: blur(20px) saturate(140%);
+      transition: transform .28s ease, border-color .28s ease, box-shadow .28s ease, background .28s ease;
+      animation: fadeUp .55s both; animation-delay: var(--delay, 0ms);
+    }
+    .video-card:not(.locked):hover {
+      transform: translateY(-6px); border-color: rgba(255,107,53,.58);
+      box-shadow: 0 22px 58px rgba(0,0,0,.34), 0 0 26px rgba(255,107,53,.12);
+    }
+    .thumbnail { position: relative; aspect-ratio: 16 / 9; display: grid; place-items: center; overflow: hidden; background: linear-gradient(135deg, #242238, #11111d 58%, #38251f); }
+    .thumbnail::before { content: ""; position: absolute; inset: 0; background: linear-gradient(0deg, rgba(7,7,13,.83), transparent 72%); z-index: 1; }
+    .thumbnail::after { content: ""; position: absolute; width: 180px; height: 180px; border-radius: 50%; border: 1px solid rgba(247,197,72,.12); box-shadow: 0 0 0 22px rgba(247,197,72,.025), 0 0 0 48px rgba(255,107,53,.025); transform: rotate(-20deg); }
+    .play-button {
+      position: relative; z-index: 2; width: 54px; height: 54px; border-radius: 50%; display: grid; place-items: center;
+      background: linear-gradient(135deg, var(--accent-2), var(--accent-1)); color: #17111a;
+      box-shadow: 0 8px 28px rgba(255,107,53,.3), inset 0 1px 1px rgba(255,255,255,.5);
+      transition: transform .25s ease; font-size: 20px; padding-right: 2px;
+    }
+    .video-card:not(.locked):hover .play-button { transform: scale(1.12); }
+    .number-badge, .locked-badge { position: absolute; z-index: 3; top: 12px; font-size: 11px; padding: 5px 9px; border-radius: 999px; backdrop-filter: blur(10px); }
+    .number-badge { right: 12px; background: rgba(7,7,13,.62); color: #fff; border: 1px solid rgba(255,255,255,.12); direction: ltr; }
+    .locked-badge { left: 12px; color: #ffc19f; border: 1px solid rgba(255,107,53,.45); background: rgba(20,13,17,.76); }
+    .card-body { padding: 17px 18px 19px; }
+    .card-title { margin: 0 0 5px; font-size: 15px; font-weight: 600; color: var(--text-primary); }
+    .card-subtitle { margin: 0; font-size: 12px; color: var(--text-secondary); font-weight: 300; direction: ltr; text-align: right; }
+    .locked { opacity: .65; cursor: not-allowed; }
+    .locked .thumbnail { background: repeating-linear-gradient(135deg, rgba(255,255,255,.055) 0 8px, rgba(0,0,0,.08) 8px 16px), linear-gradient(135deg,#24232d,#12121b); }
+    .locked .thumbnail::after { opacity: .4; }
+    .lock-icon { position: relative; z-index: 2; width: 44px; height: 38px; display: grid; place-items: center; font-size: 29px; filter: grayscale(1); opacity: .82; }
+    .locked:hover { transform: none; border-color: var(--surface-border); box-shadow: var(--card-shadow); }
+    .locked .card-subtitle { direction: rtl; text-align: right; }
+    footer { text-align: center; padding: 42px 0 8px; color: var(--text-secondary); font-size: 11px; font-weight: 300; }
+    .modal {
+      position: fixed; inset: 0; z-index: 20; display: none; align-items: center; justify-content: center;
+      padding: 22px; background: rgba(4,4,10,.76); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    }
+    .modal.active { display: flex; animation: modalFade .2s ease both; }
+    .modal-dialog {
+      width: min(920px, 100%); max-height: 92vh; overflow: auto; border-radius: 22px;
+      border: 1px solid rgba(255,255,255,.14); background: rgba(21,20,31,.96);
+      box-shadow: 0 28px 100px rgba(0,0,0,.55), 0 0 38px rgba(255,107,53,.08);
+    }
+    body[data-theme="light"] .modal-dialog { background: rgba(248,245,239,.98); border-color: rgba(40,30,20,.15); }
+    .modal-header { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 17px 20px; border-bottom: 1px solid var(--surface-border); }
+    .modal-title { margin: 0; font-size: 15px; font-weight: 600; line-height: 1.8; }
+    .close-button { flex: 0 0 auto; width: 38px; height: 38px; border-radius: 12px; border: 1px solid var(--surface-border); background: var(--surface); color: var(--text-primary); cursor: pointer; font-size: 22px; display: grid; place-items: center; transition: background .2s, border-color .2s; }
+    .close-button:hover { background: rgba(255,107,53,.14); border-color: rgba(255,107,53,.45); }
+    .player-wrap { padding: 18px; }
+    video { display: block; width: 100%; max-height: 70vh; background: #000; border-radius: 13px; }
+    .player-note { margin: 12px 2px 0; font-size: 11px; color: var(--text-secondary); }
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes modalFade { from { opacity: 0; } to { opacity: 1; } }
+    @keyframes shake { 0%,100% { transform: translateX(0); } 20%,60% { transform: translateX(-7px); } 40%,80% { transform: translateX(7px); } }
+    @media (max-width: 640px) {
+      .page-shell { padding: 18px 15px 28px; }
+      .hero { padding: 32px 0 28px; }
+      h1 { font-size: 24px; }
+      .hero p { font-size: 13px; line-height: 1.9; }
+      .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 14px; }
+      .play-button { width: 44px; height: 44px; font-size: 17px; }
+      .card-body { padding: 13px 13px 15px; }
+      .card-title { font-size: 13px; }
+      .card-subtitle { font-size: 10px; }
+      .modal { padding: 10px; }
+      .modal-dialog { border-radius: 17px; }
+      .modal-header { padding: 13px; }
+      .modal-title { font-size: 13px; }
+      .player-wrap { padding: 10px; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; animation-iteration-count: 1 !important; transition-duration: .01ms !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="page-shell">
+    <div class="topbar">
+      <button class="theme-toggle" id="themeToggle" type="button" aria-label="تغییر تم صفحه">
+        <span class="theme-icon" id="themeIcon" aria-hidden="true">☼</span>
+        <span id="themeLabel">تم روشن</span>
+      </button>
+    </div>
+
+    <header class="hero">
+      <div class="eyebrow">کتابخانه ویدیویی آموزشی</div>
+      <h1>آرشیو کلاس‌ها</h1>
+      <p>برای پخش هر کلاس روی کارت آن کلیک کنید</p>
+      <div class="stats-pill" aria-live="polite">
+        <span class="stats-dot" aria-hidden="true"></span>
+        <span>تعداد فیلم‌های موجود: <strong id="videoCount">۰</strong></span>
+        <span aria-hidden="true">—</span>
+        <span>آخرین شماره: <strong id="lastNumber">۰</strong></span>
+      </div>
+    </header>
+
+    <main>
+      <div class="status-message" id="statusMessage" role="status" aria-live="polite"></div>
+      <section class="grid" id="videoGrid" aria-label="فهرست کلاس‌های موجود"></section>
+    </main>
+
+    <footer>آرشیو کلاس‌ها <span aria-hidden="true">·</span> فضای یادگیری شما</footer>
+  </div>
+
+  <div class="modal" id="playerModal" role="dialog" aria-modal="true" aria-labelledby="modalTitle" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-header">
+        <h2 class="modal-title" id="modalTitle">پخش کلاس</h2>
+        <button class="close-button" id="closeModal" type="button" aria-label="بستن پخش‌کننده">×</button>
+      </div>
+      <div class="player-wrap">
+        <video id="videoPlayer" controls playsinline preload="metadata">
+          مرورگر شما از پخش ویدیو پشتیبانی نمی‌کند.
+        </video>
+        <p class="player-note">اگر پخش خودکار آغاز نشد، دکمه پخش را در کنترل‌های ویدیو انتخاب کنید.</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    "use strict";
+
+    // تنظیمات آرشیو
+    const MAX_CLASS = 70;
+    const VIDEO_DIR = "videos";
+
+    const videoGrid = document.getElementById("videoGrid");
+    const videoCount = document.getElementById("videoCount");
+    const lastNumber = document.getElementById("lastNumber");
+    const statusMessage = document.getElementById("statusMessage");
+    const modal = document.getElementById("playerModal");
+    const modalTitle = document.getElementById("modalTitle");
+    const videoPlayer = document.getElementById("videoPlayer");
+    const closeModalButton = document.getElementById("closeModal");
+    const themeToggle = document.getElementById("themeToggle");
+    const themeIcon = document.getElementById("themeIcon");
+    const themeLabel = document.getElementById("themeLabel");
+
+    const faNumber = (value) => new Intl.NumberFormat("fa-IR").format(value);
+
+    // بررسی وجود فایل با درخواست HEAD؛ خطاها به معنی نبودن فایل در نظر گرفته می‌شوند.
+    function checkFileExists(url) {
+      return new Promise((resolve) => {
+        const xhr = new XMLHttpRequest();
+        let settled = false;
+        const finish = (exists) => {
+          if (settled) return;
+          settled = true;
+          resolve(exists);
+        };
+        xhr.open("HEAD", url, true);
+        xhr.timeout = 4000;
+        xhr.onload = () => finish(xhr.status === 200);
+        xhr.onerror = () => finish(false);
+        xhr.ontimeout = () => finish(false);
+        try { xhr.send(); } catch (_) { finish(false); }
+      });
+    }
+
+    function showStatus(message) {
+      statusMessage.textContent = message;
+      statusMessage.classList.add("visible");
+    }
+
+    // ساخت کارت یک ویدیوی موجود
+    function createCard(num, index) {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "video-card";
+      card.style.setProperty("--delay", `${Math.min(index * 55, 770)}ms`);
+      card.setAttribute("aria-label", `پخش کلاس شماره ${num}`);
+
+      const thumbnail = document.createElement("div");
+      thumbnail.className = "thumbnail";
+
+      const badge = document.createElement("span");
+      badge.className = "number-badge";
+      badge.textContent = `#${num}`;
+
+      const play = document.createElement("span");
+      play.className = "play-button";
+      play.setAttribute("aria-hidden", "true");
+      play.textContent = "▶";
+
+      const body = document.createElement("div");
+      body.className = "card-body";
+      const title = document.createElement("h2");
+      title.className = "card-title";
+      title.textContent = `کلاس شماره ${faNumber(num)}`;
+      const subtitle = document.createElement("p");
+      subtitle.className = "card-subtitle";
+      subtitle.textContent = `class_${num}.mp4`;
+
+      thumbnail.append(badge, play);
+      body.append(title, subtitle);
+      card.append(thumbnail, body);
+      card.addEventListener("click", () => openPlayer(num));
+      return card;
+    }
+
+    // تنها یک کارت قفل‌شده، بعد از آخرین شماره موجود
+    function createLockedCard(num, index) {
+      const card = document.createElement("button");
+      card.type = "button";
+      card.className = "video-card locked";
+      card.style.setProperty("--delay", `${Math.min(index * 55, 770)}ms`);
+      card.setAttribute("aria-label", `کلاس شماره ${num} قفل است`);
+      card.setAttribute("aria-disabled", "true");
+
+      const thumbnail = document.createElement("div");
+      thumbnail.className = "thumbnail";
+      const badge = document.createElement("span");
+      badge.className = "number-badge";
+      badge.textContent = `#${num}`;
+      const lockBadge = document.createElement("span");
+      lockBadge.className = "locked-badge";
+      lockBadge.textContent = "🔒 قفل";
+      const lock = document.createElement("span");
+      lock.className = "lock-icon";
+      lock.setAttribute("aria-hidden", "true");
+      lock.textContent = "🔒";
+
+      const body = document.createElement("div");
+      body.className = "card-body";
+      const title = document.createElement("h2");
+      title.className = "card-title";
+      title.textContent = `کلاس شماره ${faNumber(num)}`;
+      const subtitle = document.createElement("p");
+      subtitle.className = "card-subtitle";
+      subtitle.textContent = "به‌زودی...";
+
+      thumbnail.append(badge, lockBadge, lock);
+      body.append(title, subtitle);
+      card.append(thumbnail, body);
+      card.addEventListener("click", () => {
+        if (typeof card.animate === "function") {
+          card.animate([
+            { transform: "translateX(0)" },
+            { transform: "translateX(-7px)" },
+            { transform: "translateX(7px)" },
+            { transform: "translateX(-7px)" },
+            { transform: "translateX(7px)" },
+            { transform: "translateX(0)" }
+          ], { duration: 420, easing: "ease-in-out" });
+        } else {
+          card.style.animation = "shake .42s ease-in-out";
+          card.addEventListener("animationend", () => { card.style.animation = ""; }, { once: true });
+        }
+      });
+      return card;
+    }
+
+    // باز کردن پخش‌کننده
+    function openPlayer(num) {
+      modalTitle.textContent = `کلاس شماره ${faNumber(num)} — class_${num}.mp4`;
+      videoPlayer.src = `${VIDEO_DIR}/class_${num}.mp4`;
+      modal.classList.add("active");
+      modal.setAttribute("aria-hidden", "false");
+      document.body.style.overflow = "hidden";
+      closeModalButton.focus();
+      const playPromise = videoPlayer.play();
+      if (playPromise && typeof playPromise.catch === "function") playPromise.catch(() => {});
+    }
+
+    // توقف و پاک‌سازی منبع ویدیو هنگام بستن مودال
+    function closePlayer() {
+      modal.classList.remove("active");
+      modal.setAttribute("aria-hidden", "true");
+      videoPlayer.pause();
+      videoPlayer.removeAttribute("src");
+      videoPlayer.load();
+      document.body.style.overflow = "";
+    }
+
+    closeModalButton.addEventListener("click", closePlayer);
+    modal.addEventListener("click", (event) => {
+      if (event.target === modal) closePlayer();
+    });
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && modal.classList.contains("active")) closePlayer();
+    });
+
+    // تغییر تم و نگه‌داری انتخاب کاربر
+    function applyTheme(theme) {
+      const light = theme === "light";
+      document.body.dataset.theme = light ? "light" : "dark";
+      themeIcon.textContent = light ? "☾" : "☼";
+      themeLabel.textContent = light ? "تم تاریک" : "تم روشن";
+      themeToggle.setAttribute("aria-label", light ? "فعال‌کردن تم تاریک" : "فعال‌کردن تم روشن");
+    }
+    let savedTheme = "dark";
+    try { savedTheme = localStorage.getItem("classArchiveTheme") || "dark"; } catch (_) {}
+    applyTheme(savedTheme === "light" ? "light" : "dark");
+    themeToggle.addEventListener("click", () => {
+      const next = document.body.dataset.theme === "light" ? "dark" : "light";
+      applyTheme(next);
+      try { localStorage.setItem("classArchiveTheme", next); } catch (_) {}
+    });
+
+    // شناسایی فایل‌ها و ساخت آرشیو
+    async function init() {
+      showStatus("در حال بررسی ویدیوهای موجود…");
+      const checks = [];
+      for (let i = 1; i <= MAX_CLASS; i++) {
+        checks.push(checkFileExists(`${VIDEO_DIR}/class_${i}.mp4`).then((exists) => exists ? i : null));
+      }
+
+      try {
+        const results = await Promise.all(checks);
+        const existing = results.filter((num) => num !== null).sort((a, b) => a - b);
+        videoGrid.replaceChildren();
+
+        if (existing.length === 0) {
+          videoCount.textContent = faNumber(0);
+          lastNumber.textContent = faNumber(0);
+          showStatus("هنوز ویدیویی در آرشیو پیدا نشد. فایل‌های class_1.mp4 تا class_70.mp4 را در پوشه videos قرار دهید و صفحه را دوباره بارگذاری کنید.");
+          return;
+        }
+
+        statusMessage.classList.remove("visible");
+        existing.forEach((num, index) => videoGrid.appendChild(createCard(num, index)));
+        const lastNum = existing[existing.length - 1];
+        if (lastNum < MAX_CLASS) videoGrid.appendChild(createLockedCard(lastNum + 1, existing.length));
+        videoCount.textContent = faNumber(existing.length);
+        lastNumber.textContent = faNumber(lastNum);
+      } catch (_) {
+        showStatus("بررسی ویدیوها انجام نشد. صفحه را از طریق یک static server اجرا کنید و دوباره تلاش کنید.");
+      }
+    }
+
+    init();
+  </script>
+</body>
+</html>
